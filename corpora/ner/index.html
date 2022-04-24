@@ -64,7 +64,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#freem-ner" class="md-skip">
+        <a href="#freemner" class="md-skip">
           Skip to content
         </a>
       
@@ -299,9 +299,54 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          FreEM NER
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         FreEM NER
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#publications" class="md-nav__link">
+    Publications
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#corpus" class="md-nav__link">
+    Corpus
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#annotation" class="md-nav__link">
+    Annotation
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -439,6 +484,35 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#publications" class="md-nav__link">
+    Publications
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#corpus" class="md-nav__link">
+    Corpus
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#annotation" class="md-nav__link">
+    Annotation
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -450,7 +524,31 @@
               
                 
 
-<h1 id="freem-ner">FreEM NER<a class="headerlink" href="#freem-ner" title="Permanent link">&para;</a></h1>
+<h1 id="freemner">FreEM<sub><i>NER</i></sub><a class="headerlink" href="#freemner" title="Permanent link">&para;</a></h1>
+<p>FreEM<sub><i>NER</i></sub> is a manually annotated corpus for named entity recognition. It is closely linked to <a href="https://freem-corpora.github.io/corpora/lpm/">FreEM<sub><i>LPM</i></sub> </a>, from which it is derived.</p>
+<h2 id="publications">Publications<a class="headerlink" href="#publications" title="Permanent link">&para;</a></h2>
+<p>Data (GitHub and Zenodo):</p>
+<ul>
+<li>Gabay, Simon, Thibault Clérice, Matthias Gille Levenson, Jean-Baptiste Camps, Jean-Baptiste Tanguy, <em>FreEM-corpora/FreEMlpm: FreEM LPM (Lemma, POS-tags, Morphology) corpus (4.0.1)</em>, GitHub, 2022, <a href="https://github.com/FreEM-corpora/FreEMlpm">https://github.com/FreEM-corpora/FreEMlpm</a>.</li>
+<li>Gabay, Simon, Thibault Clérice, Matthias Gille Levenson, Jean-Baptiste Camps, Jean-Baptiste Tanguy, <em>FreEM-corpora/FreEMlpm: FreEM LPM (Lemma, POS-tags, Morphology) corpus (4.0.1)</em>, Zenodo, 2022, <a href="https://doi.org/10.5281/zenodo.6481300">doi.org/10.5281/zenodo.6481300</a>.</li>
+</ul>
+<h2 id="corpus">Corpus<a class="headerlink" href="#corpus" title="Permanent link">&para;</a></h2>
+<figure>
+    <img src="../../assets/ner/corpus_desc_1.png" alt="Corpus description" width="400"/>
+    <figcaption>Fig.1 - Number of entities per text in the
+FreEM<sub><i>NER</i></sub> corpus.</figcaption>
+</figure>
+
+<p>Rather than designing a new corpus, we have decided to use a subpart of the “core corpus” of the <a href="http://presto.ens-lyon.fr/?page_id=48"><em>Presto project</em></a>, namely the text written during the French <em>Ancien Régime</em> (c. 15<sup>th</sup>-18<sup>th</sup> c., <em>i.e.</em> 34 texts). This choice is driven by our will to limit the number of annotated corpora for historical French, the same set of documents having already been abundantly corrected to <a href="https://freem-corpora.github.io/corpora/lpm/">train a lemmatizer</a>, but also to avoid a complex selection of works supposed to ensure a relative representativeness of literary documents from the <em>Ancien Régime</em>, already perfectly done by our colleagues.</p>
+<p>The number of genres covered is extremely large: poetry, drama, novel, correspondence, grammar, philosophy, short stories, encyclopedic literature, etc. and guarantees, here again, a reasonable representativeness of the range of possibilities of Belles-Lettres. The corpus is balanced regarding the distribution per century (c. 10/century) but not regaring the length of the texts, which increases over time (cf. fig. 1), following a possible trend in literature</p>
+<h2 id="annotation">Annotation<a class="headerlink" href="#annotation" title="Permanent link">&para;</a></h2>
+<figure>
+    <a href="../../assets/ner/entities_per_text.png" target="_blank"><img src="../../assets/ner/entities_per_text.png" alt="Corpus description" width="400"/></a>
+    <figcaption>Fig.2 - Number of entities per text in the
+FreEM<sub><i>NER</i></sub> corpus.<br/> (Click to enlarge.)</figcaption>
+</figure>
+
+<p>Because two important historical corpora (Quaero and Impresso) have chosen to follow the <a href="http://www.quaero.org/media/files/bibliographie/quaero-guide-annotation-2011.pdf"><em>Quaero annotation guide</em></a>, it seemed logical to use this same typology. Because our texts and interests diverge from those of the aforementioned corpora, only some types and subtypes have been kept from the Quaero annotation scheme. The details of our annotation choices can be found in a <a href="https://hal.archives-ouvertes.fr/hal-02571190">dedicated annotation manual</a>.</p>
 
               
             </article>
