@@ -361,9 +361,47 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Normalisation
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         Normalisation
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#use-the-model" class="md-nav__link">
+    Use the model
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#results" class="md-nav__link">
+    Results
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -439,6 +477,28 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#use-the-model" class="md-nav__link">
+    Use the model
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#results" class="md-nav__link">
+    Results
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -451,6 +511,69 @@
                 
 
 <h1 id="normalisation-models">Normalisation models<a class="headerlink" href="#normalisation-models" title="Permanent link">&para;</a></h1>
+<h2 id="use-the-model">Use the model<a class="headerlink" href="#use-the-model" title="Permanent link">&para;</a></h2>
+<h2 id="results">Results<a class="headerlink" href="#results" title="Permanent link">&para;</a></h2>
+<table border="1">
+<thead>
+  <tr>
+    <th>Model</th>
+    <th>Precision %</th>
+    <th>Precision OOV %</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <th>Identity function</th>
+    <td>72,40</td>
+    <td>41,89</td>
+  </tr>
+  <tr>
+    <th>ABA</th>
+    <td>94.70</td>
+    <td>67,51</td>
+  </tr>
+  <tr>
+    <th>SMT</th>
+    <td><b>96,83</b>±0,06</td>
+    <td>73,41±0,16</td>
+  </tr>
+  <tr>
+    <th>LSTM</th>
+    <td>96,13±0,06</td>
+    <td><b>74,52</b>±0,64</td>
+  </tr>
+  <tr>
+    <th>Transformer</th>
+    <td>96,03±0,06</td>
+    <td>74,02±0,77</td>
+  </tr>
+  <tr>
+    <th>Fonction d’identité + Le<span style="font-style:italic">fff</span></th>
+    <td>85,80</td>
+    <td>63,08</td>
+  </tr>
+  <tr>
+    <th>ABA + Le<span style="font-style:italic">fff</span></th>
+    <td>95,00</td>
+    <td>71,54</td>
+  </tr>
+  <tr>
+    <th>SMT + Le<span style="font-style:italic">fff</span></th>
+    <td><b>97,00</b>±0,00</td>
+    <td><b>76,04</b>±0,18</td>
+  </tr>
+  <tr>
+    <th>LSTM + Le<span style="font-style:italic">fff</span></th>
+    <td>96,27±0,06</td>
+    <td><b>76,29</b>±0,29</td>
+  </tr>
+  <tr>
+    <th>Transformer + Le<span style="font-style:italic">fff</span></th>
+    <td>96,17±0,06</td>
+    <td>75,56±0,32</td>
+  </tr>
+</tbody>
+</table>
 
               
             </article>
