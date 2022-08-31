@@ -511,18 +511,18 @@
                 
 
 <h1 id="freemnorm">FreEM<sub><i>norm</i></sub><a class="headerlink" href="#freemnorm" title="Permanent link">&para;</a></h1>
-<p>FreEM<sub><i>norm</i></sub> is a parallel corpus covering a range of different genres of text throughout different decades of the 17<sup>th</sup> century. It is the new version of <a href="https://github.com/e-ditiones/PARALLEL17">PARALLEL17</a>, that is now deprecated.</p>
+<p>FreEM<sub><i>norm</i></sub> is a parallel corpus covering a range of different genres of text throughout different decades of the 17<sup>th</sup> century. It is the new version of <a href="https://github.com/e-ditiones/PARALLEL17">PARALLEL17</a>, which is now deprecated.</p>
 <h2 id="publications">Publications<a class="headerlink" href="#publications" title="Permanent link">&para;</a></h2>
 <p>Data (GitHub and Zenodo):</p>
 <ul>
 <li>Gabay, Simon, Philippe Gambette, <em>FreEM-corpora/FreEMnorm: FreEM norm Parallel corpus (1.0.1)</em>, GitHub, 2022. <a href="https://github.com/FreEM-corpora/FreEMnorm">https://github.com/FreEM-corpora/FreEMnorm</a> .</li>
 <li>Gabay, Simon, Philippe Gambette, <em>FreEM-corpora/FreEMnorm: FreEM norm Parallel corpus (1.0.1)</em>, Zenodo, 2022. <a href="https://doi.org/10.5281/zenodo.5865428">10.5281/zenodo.5865428</a>.</li>
 </ul>
-<p>Conference paper:</p>
+<p>Conference papers:</p>
 <ul>
 <li>Simon Gabay, Marine Riguet, Loïc Barrault, "A Workflow For On The Fly Normalisation Of 17<sup>th</sup> c. French", <em>DH2019</em>, ADHO, Jul 2019, Utrecht, Netherlands. <a href="https://hal.archives-ouvertes.fr/hal-02276150">⟨hal-02276150⟩</a>.</li>
 <li>Simon Gabay, Loïc Barrault, "Traduction automatique pour la normalisation du français du XVIIe siècle", <em>TALN 2020</em>, ATALA, Jun 2020, Nancy, France. <a href="https://hal.archives-ouvertes.fr/hal-02596669">⟨hal-02596669⟩</a>.</li>
-<li>Rachel Bawden, Jonathan Poinhos, Eleni Kogkitsidou, Philippe Gambette, Benoît Sagot, Simon Gabay, "Automatic Normalisation of Early Modern French", <em>Proceedings of the 13<sup>th</sup> Language Resources and Evaluation Conference</em>, European Language Resources Association, Jun 2022, Marseille, France. <a href="https://hal.inria.fr/hal-03540226">⟨hal-03540226⟩</a>.</li>
+<li>Rachel Bawden, Jonathan Poinhos, Eleni Kogkitsidou, Philippe Gambette, Benoît Sagot, Simon Gabay, "Automatic Normalisation of Early Modern French", <em>Proceedings of the 13<sup>th</sup> Language Resources and Evaluation Conference</em>, European Language Resources Association, Jun 2022, Marseille, France, p. 3354‑3366. <a href="https://hal.inria.fr/hal-03540226">⟨hal-03540226⟩</a>.</li>
 </ul>
 <h2 id="content">Content<a class="headerlink" href="#content" title="Permanent link">&para;</a></h2>
 <figure>
@@ -530,9 +530,8 @@
     <figcaption>Fig.2 - Example of linguistic normalisation.</figcaption>
 </figure>
 
-<p>FreEM norm is a parallel corpus which covers
-a range of different genres of text throughout different decades of the 17<sup>th</sup> century, written in prose and verse, which have been semi-automatically normalised (<a href="https://hal.archives-ouvertes.fr/hal-02276150">Gabay 2019</a>) and manually corrected. Most of these texts are French texts that belong to the <em>belles-lettres</em> (<em>i.e.</em> literature in its broadest sense), which is the type of source we want to normalise, but additional texts from different traditions (science, law, etc.) are marginally present in the corpus.</p>
-<p>While some of the transcriptions have been produced specifically for this corpus, others have been borrowed from other projects: transcription rules are therefore not strictly equivalent from one text to another regarding, for instance old characters (<em>e.g.</em> the long <em>s</em>, <em>ſ</em>) or abbreviations (<em>e.g.</em> <em>õ</em>→<em>on</em>). "Normalisation" is understood here as a partial alignement with contemporary French: in some specific cases, specific spelling are maintained to keep the metre of the verse intact (<em>e.g.</em> the adverbial <em>-s</em>: <em>jusques</em>+vowel → <em>jusques</em> and not <em>jusqu'</em> to have three syllables).</p>
+<p>FreEM<sub><i>norm</i></sub> is a parallel corpus covering a range of different genres of text throughout different decades of the 17<sup>th</sup> century, written in prose and verse, which have been semi-automatically normalised (<a href="https://hal.archives-ouvertes.fr/hal-02276150">Gabay 2019</a>) and manually corrected. Most of these texts are French texts that belong to the <em>belles-lettres</em> (<em>i.e.</em> literature in its broadest sense), which is the type of source we want to normalise, but additional texts from different traditions (science, law, etc.) are marginally present in the corpus.</p>
+<p>While some of the transcriptions have been produced specifically for this corpus, others have been borrowed from other projects: transcription rules are therefore not strictly equivalent from one text to another regarding, for instance old characters (<em>e.g.</em> the long <em>s</em>, <em>ſ</em>) and abbreviations (<em>e.g.</em> <em>õ</em>→<em>on</em>). "Normalisation" is understood here as a partial alignement with contemporary French: in some specific cases, specific spelling are maintained to keep the metre of the verse intact (<em>e.g.</em> the adverbial <em>-s</em>: <em>jusques</em>+vowel → <em>jusques</em> and not <em>jusqu'</em> to keep its three syllables).</p>
 <p>The dataset is split into train, development and test sets, of which basic statistics are as follows:</p>
 <table>
 <tr><th>Set</th><th>#sents</th><th>#ModFr toks</th><th>#Fr toks</th><th>#ModFr OOV*</th><th>#Fr OOV* toks</th></tr>
