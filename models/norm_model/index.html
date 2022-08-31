@@ -539,10 +539,52 @@
                 
 
 <h1 id="normalisation-models">Normalisation models<a class="headerlink" href="#normalisation-models" title="Permanent link">&para;</a></h1>
+
+<p>We provide several models for the automatic normalisation of Early Modern French (17<sup><small>th</small></sup> century texts) into contemporary French spelling norms. The models are described in detail in our LREC 2022 paper <a href="https://hal.archives-ouvertes.fr/hal-03540226">Automatic Normalisation of Early Modern French</a> (see below for the citation) and in our <a href="https://github.com/rbawden/ModFr-Norm">GitHub repository</a>.
+</p>
+
 <h2 id="use-the-model">Use the models<a class="headerlink" href="#use-the-model" title="Permanent link">&para;</a></h2>
 
-<h3 id="MT">Machine Translation Models<a class="headerlink" href="#MT" title="Permanent link">&para;</a></h3>
-<p>Coming soon...</p>
+<h3 id="MT">Machine Translation (MT) approach<a class="headerlink" href="#MT" title="Permanent link">&para;</a></h3>
+<p>
+MT-style normalisation models trained on <a href="../../corpora/norm/">FreEM<sub><i>norm</i></sub></a>. We provide a statistical phrase-based model and two neural models (LSTM and transformer).
+</p>
+
+<h4>Quick use guide</h4>
+
+<p>
+For easy use, we provide a model through HuggingFace. It is based on the transformer MT model from the paper, ported to HuggingFace and fine-tuned, with some additional post-processing steps to avoid hallucinated words. The model scores will therefore differ slightly from the paper. More information is provided in the <a href="https://github.com/rbawden/ModFr-Norm">GitHub repository</a>.
+</p>
+<p>
+To use the model, you will need to download the <tt>pipeline.py</tt> file either from <a href="https://github.com/rbawden/ModFr-Norm">GitHub</a> or from <a href="https://huggingface.co/rbawden/modern_french_normalisation">HuggingFace</a>. You can use it on the command line as follows:<br>
+<tt>cat INPUT_FILE | python pipeline.py -k BATCH_SIZE -b BEAM_SIZE > OUTPUT_FILE</tt>
+<br>
+or use it python-internally:
+<br>
+<tt>
+from transformers import AutoTokenizer, AutoModelForSeq2SeqLM<br>
+from pipeline import NormalisationPipeline # N.B. local file<br>
+<br>
+tokeniser = AutoTokenizer.from_pretrained("rbawden/modern_french_normalisation")<br>
+model = AutoModelForSeq2SeqLM.from_pretrained("rbawden/modern_french_normalisation")<br>
+norm_pipeline = NormalisationPipeline(model=model,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tokenizer=tokeniser,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;batch_size=256,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;beam_size=5)<br>
+<br>
+list_inputs = ["Elle haïſſoit particulierement le Cardinal de Lorraine;", "Adieu, i'iray chez vous tantoſt vous rendre grace."]<br>
+list_outputs = norm_pipeline(list_inputs)<br>
+print(list_outputs)<br>
+<br>
+>> ["Elle haïssait particulièrement le Cardinal de Lorraine;", "Adieu, j'irai chez vous tantôt vous rendre grâce."]
+</tt>
+</p>
+
+<h4>Detailed instructions and information</h4>
+
+<p>
+For detailed information on how to use our models and reproduce our results (including training), please visit the <a href="https://github.com/rbawden/ModFr-Norm">GitHub repository</a>.
+</p>
 
 <h3 id="aba">ABA<a class="headerlink" href="#aba" title="Permanent link">&para;</a></h2>
 <p>
@@ -552,10 +594,51 @@ is <a href="https://igm.univ-mlv.fr/~gambette/text-processing/aba/">provided her
 
 <h2 id="publication">Publication<a class="headerlink" href="#publication" title="Permanent link">&para;</a></h2>
 <p>
-Rachel Bawden, Jonathan Poinhos, Eleni Kogkitsidou, Philippe Gambette, Benoît Sagot, Simon Gabay. <a href="https://hal.archives-ouvertes.fr/hal-03540226"><i>Automatic Normalisation of Early Modern French</i></a>. LREC 2022.
+Please cite the following article:
 </p>
+<p>
+Rachel Bawden, Jonathan Poinhos, Eleni Kogkitsidou, Philippe Gambette, Benoît Sagot and Simon Gabay. <a href="https://hal.archives-ouvertes.fr/hal-03540226"><i>Automatic Normalisation of Early Modern French</i></a>. In <i>Proceedings of the 13<sup><small>th</small></sup> Language Resources and Evaluation Conference</i>. European Language Resources Association. Marseille, France, p. 3354‑3366.
+</p>
+<p>Bibtex:</p>
+<p><tt>@inproceedings{bawden-etal-2022-automatic,
+title = {{Automatic Normalisation of Early Modern French}},
+author = {Bawden, Rachel and Poinhos, Jonathan and Kogkitsidou, Eleni and Gambette, Philippe and Sagot, Beno{\^i}t and Gabay, Simon},
+url = {https://hal.inria.fr/hal-03540226},
+booktitle = {Proceedings of the 13th Language Resources and Evaluation Conference},
+publisher = {European Language Resources Association},
+year = {2022},
+address = {Marseille, France},
+note = {To appear}
+}</tt></p>
+<p>
+The MT models can be found on Zenodo:
+</p>
+<p>
+Rachel Bawden, Jonathan Poinhos, Eleni Kogkitsidou, Philippe Gambette, Benoît Sagot and Simon Gabay. (2022). FreEM-corpora/FreEM-automatic-normalisation: normalisation models for Early Modern French (1.0). Zenodo. <a href="https://doi.org/10.5281/zenodo.6594765">https://doi.org/10.5281/zenodo.6594765</a>
+</p>
+<p><tt>
+@software{bawden_rachel_2022_6594765,
+author = {Bawden, Rachel and
+Poinhos, Jonathan and
+Kogkitsidou, Eleni and
+Gambette, Philippe and
+Sagot, Benoît and
+Gabay, Simon},
+title = {{FreEM-corpora/FreEM-automatic-normalisation:
+normalisation models for Early Modern French}},
+month = may,
+year = 2022,
+publisher = {Zenodo},
+version = {1.0},
+doi = {10.5281/zenodo.6594765},
+url = {https://doi.org/10.5281/zenodo.6594765}
+}
+</tt></p>
 
 <h2 id="results">Results<a class="headerlink" href="#results" title="Permanent link">&para;</a></h2>
+<p>
+Full results are provided in the code repository and the paper. Here we provide results on the FreEM<sub><i class="">norm</i></sub> test set: (i) overall accuracy (symmetrised word accuracy) and (ii) accuracy on out-of-vocabulary words.
+</p>
 <table border="1">
 <thead>
   <tr>
@@ -567,53 +650,53 @@ Rachel Bawden, Jonathan Poinhos, Eleni Kogkitsidou, Philippe Gambette, Benoît S
 <tbody>
   <tr>
     <th>Identity function</th>
-    <td>72,73</td>
-    <td>43,00</td>
+    <td>72.73</td>
+    <td>43.00</td>
   </tr>
   <tr>
     <th>ABA</th>
-    <td>95,14</td>
-    <td>69,50</td>
+    <td>95.14</td>
+    <td>69.50</td>
   </tr>
   <tr>
     <th>SMT</th>
-    <td bgcolor="red"><b>97,10</b>±0,02</td>
-    <td>75,64±0,18</td>
+    <td bgcolor="red"><b>97.10</b>±0.02</td>
+    <td>75.64±0.18</td>
   </tr>
   <tr>
     <th>LSTM</th>
-    <td>96,14±0,08</td>
-    <td bgcolor="red"><b>76,69</b>±0,70</td>
+    <td>96.14±0.08</td>
+    <td bgcolor="red"><b>76.69</b>±0.70</td>
   </tr>
   <tr>
     <th>Transformer</th>
-    <td>95,89±0,07</td>
-    <td>75,73±0,38</td>
+    <td>95.89±0.07</td>
+    <td>75.73±0.38</td>
   </tr>
   <tr>
     <th>Fonction d’identité + Le<span style="font-style:italic">fff</span></th>
-    <td>86,12</td>
-    <td>64,84</td>
+    <td>86.12</td>
+    <td>64.84</td>
   </tr>
   <tr>
     <th>ABA + Le<span style="font-style:italic">fff</span></th>
-    <td>95,44</td>
-    <td>73,54</td>
+    <td>95.44</td>
+    <td>73.54</td>
   </tr>
   <tr>
     <th>SMT + Le<span style="font-style:italic">fff</span></th>
-    <td bgcolor="red"><b>97,24</b>±0,02</td>
-    <td bgcolor="red"><b>78,37</b>±0,20</td>
+    <td bgcolor="red"><b>97.24</b>±0.02</td>
+    <td bgcolor="red"><b>78.37</b>±0.20</td>
   </tr>
   <tr>
     <th>LSTM + Le<span style="font-style:italic">fff</span></th>
-    <td>96,25±0,10</td>
-    <td bgcolor="red"><b>78,35</b>±0,79</td>
+    <td>96.25±0.10</td>
+    <td bgcolor="red"><b>78.35</b>±0.79</td>
   </tr>
   <tr>
     <th>Transformer + Le<span style="font-style:italic">fff</span></th>
-    <td>96,01±0,09</td>
-    <td>77,51±1,00</td>
+    <td>96.01±0.09</td>
+    <td>77.51±1.00</td>
   </tr>
 </tbody>
 </table>
@@ -622,9 +705,9 @@ Rachel Bawden, Jonathan Poinhos, Eleni Kogkitsidou, Philippe Gambette, Benoît S
 <h2 id="qualitative">Qualitative comparison of results<a class="headerlink" href="#qualitative" title="Permanent link">&para;</a></h2>
 
 Using <a href="http://obvil.lip6.fr/medite/">MEDITE</a>, we aligned two automatically normalised versions of the dev subcorpus of <a href="../../corpora/norm/">FreEM<sub><i class="">norm</i></sub></a>, 
-the first one with the best statistical model, SMT + Le<span style="font-style:italic">fff</span> and 
-the second one with the best non-statistical approach, ABA + Le<span style="font-style:italic">fff</span>: 
-<a href="medite.html">result of the comparison</a>.
+the first one with the best statistical model (SMT + Le<span style="font-style:italic">fff</span>) and 
+the second one with the best non-statistical approach (ABA + Le<span style="font-style:italic">fff</span>). 
+The results of the comparison can be found <a href="medite.html">here</a>.
               
             </article>
           </div>
