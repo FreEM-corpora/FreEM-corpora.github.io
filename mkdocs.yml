@@ -1,0 +1,106 @@
+site_name: FreEM-corpora Documentation
+site_description: FreEM-corpora Documentation
+repo_name: FreEM-corpora Home
+repo_url: http://FreEM-corpora.github.io/
+edit_uri: ""
+
+# Customization
+extra:
+    social:
+      - icon: fontawesome/brands/github-alt
+        link: https://github.com/FreEM-corpora/
+      - icon: fontawesome/solid/globe
+        link: https://FreEM-corpora.github.io
+#      - icon: fontawesome/brands/twitter
+#        link: https://twitter.com/account
+
+use_directory_urls: true
+# pagination
+nav:
+  - Project Home: index.md
+  - Corpora:
+       - FreEM max: corpora/max.md
+       - FreEM norm: corpora/norm.md
+       - FreEM LPM: corpora/lpm.md
+       - FreEM NER: corpora/ner.md
+  - Models:
+       - Language model: models/lm_model.md
+       - Normalisation: models/norm_model.md
+       - Lemmatisation et alii: models/lpm_model.md
+       - NER: models/ner_model.md
+  - Publications: publications/publications.md
+
+theme:
+    name: 'material'
+    logo: 'assets/icons/f.jpg'
+    favicon: 'assets/icons/f.jpg'
+    icon:
+        repo: fontawesome/solid/globe
+    font:
+        text: 'Source Sans Pro'
+        code: 'IBM Plex Mono'
+#    custom_dir: 'theme/'
+    features:
+      - navigation.instant
+    palette:
+        primary: 'white'
+
+
+#plugins
+plugins:
+#  - git-revision-date-localized
+#  - table-reader
+#  - tooltipster-links
+#  - mermaid2
+#  - pheasant
+#  - macros
+#  - mkdocs-versioning:
+#        version: 1.0.0
+  - search:
+        separator: '[\s\-\.]+'
+        lang:
+          - en
+          - fr
+          - it
+          - de
+
+markdown_extensions:
+  - pymdownx.smartsymbols
+#  - lightgallery
+  - pymdownx.mark
+  - markdown.extensions.attr_list
+  - pymdownx.superfences
+      # make exceptions to highlighting of code:
+#      custom_fences:
+#        - name: mermaid
+#          class: mermaid
+#          format: !!python/name:mermaid2.fence_mermaid
+  - pymdownx.details
+  - pymdownx.tabbed
+  - pymdownx.details
+  - pymdownx.escapeall
+  - pymdownx.smartsymbols
+  - pymdownx.snippets
+  - toc:
+        permalink: true
+  - codehilite:
+        linenums: true
+  - meta
+  - footnotes
+  - admonition
+
+
+extra_css:
+#  - https://unpkg.com/mermaid@8.5.1/dist/mermaid.css
+#  - 'stylesheets/extra.css'
+#  - 'css/lightgallery.min.css'
+#  - 'css/tooltipster.bundle.min.css'
+#  - 'css/extra_tooltip.css'
+#  - 'css/tooltipster-sideTip-light.min.css'
+#  - 'css/extra.css'
+
+extra_javascript:
+#  - 'js/lightgallery.min.js'
+#  - 'js/lightgallery_extra.js'
+#  - 'js/tooltipster.bundle.js'
+#  - https://unpkg.com/mermaid@8.5.1/dist/mermaid.min.js
