@@ -3,610 +3,392 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FreEM</title>
+    <title>FreEM – NLP resources for Early Modern French</title>
+    <meta name="description" content="FreEM: open corpora and NLP models for Early Modern French (16th–18th c.): lemmatisation, POS tagging, spelling normalisation and named entity recognition.">
+    <meta name="google-site-verification" content="f9lUiUtedq0p8vJqmrOGc-hzUxlvJsb23fXDg3KVYHs" />
+    <meta name="author" content="Simon Gabay">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://freem-corpora.github.io/">
+    <meta name="theme-color" content="#f5f6f3">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%238c1c2b'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-family='Arial,sans-serif' font-weight='700' font-size='21' fill='%23fff'%3E%C5%BF%3C/text%3E%3C/svg%3E">
+
+    <!-- Open Graph / social sharing -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="FreEM">
+    <meta property="og:title" content="FreEM – NLP for Early Modern French">
+    <meta property="og:description" content="Open corpora and NLP models for Early Modern French (16th–18th c.): lemmatisation, POS tagging, normalisation, named entity recognition.">
+    <meta property="og:url" content="https://freem-corpora.github.io/">
+    <meta property="og:image" content="https://freem-corpora.github.io/images/og.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="A sentence from Descartes, Discours de la méthode (1637), annotated with normalised spelling, lemma and part of speech.">
+    <meta property="og:locale" content="en_GB">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <!-- Structured data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "ResearchProject",
+          "@id": "https://freem-corpora.github.io/#project",
+          "name": "FreEM",
+          "alternateName": "FreEM corpora",
+          "url": "https://freem-corpora.github.io/",
+          "description": "Corpora and NLP models for Early Modern French (16th–18th centuries): lemmatisation, part-of-speech tagging, linguistic normalisation and named entity recognition.",
+          "keywords": ["Early Modern French", "français préclassique", "français classique", "NLP", "lemmatisation", "POS tagging", "spelling normalisation", "named entity recognition", "historical linguistics", "digital humanities"],
+          "founder": {"@type": "Person", "name": "Simon Gabay", "email": "mailto:simon.gabay@unige.ch", "affiliation": {"@type": "CollegeOrUniversity", "name": "University of Geneva", "url": "https://www.unige.ch"}},
+          "parentOrganization": {"@type": "CollegeOrUniversity", "name": "University of Geneva", "url": "https://www.unige.ch"},
+          "sameAs": ["https://github.com/FreEM-corpora"]
+        },
+        {
+          "@type": "Dataset",
+          "name": "FreEM LPM",
+          "description": "Early Modern French corpora annotated for lemmas, parts of speech, morphology and named entities.",
+          "url": "https://doi.org/10.5281/zenodo.6481299",
+          "identifier": "https://doi.org/10.5281/zenodo.6481299",
+          "inLanguage": "fr",
+          "isAccessibleForFree": true,
+          "creator": {"@id": "https://freem-corpora.github.io/#project"}
+        },
+        {
+          "@type": "Dataset",
+          "name": "FreEM norm",
+          "description": "Parallel corpus of Early Modern French and normalised French for training spelling normalisation models.",
+          "url": "https://doi.org/10.5281/zenodo.5865427",
+          "identifier": "https://doi.org/10.5281/zenodo.5865427",
+          "inLanguage": "fr",
+          "isAccessibleForFree": true,
+          "creator": {"@id": "https://freem-corpora.github.io/#project"}
+        },
+        {
+          "@type": "Dataset",
+          "name": "FreEM max (open access)",
+          "description": "Corpus of Early Modern French texts for training language models.",
+          "url": "https://doi.org/10.5281/zenodo.6481134",
+          "identifier": "https://doi.org/10.5281/zenodo.6481134",
+          "inLanguage": "fr",
+          "isAccessibleForFree": true,
+          "creator": {"@id": "https://freem-corpora.github.io/#project"}
+        }
+      ]
+    }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --paper: #f5f6f3;
+            --surface: #ffffff;
+            --ink: #1d2321;
+            --muted: #5d6460;
+            --rule: #d8dbd4;
+            --wine: #8c1c2b;
+            --wine-soft: #f3e4e5;
+            --measure: 64ch;
         }
 
-        :root {
-            --primary-color: #1a365d;
-            --secondary-color: #2563eb;
-            --accent-color: #dc2626;
-            --text-color: #1f2937;
-            --light-bg: #f9fafb;
-            --white: #ffffff;
-            --border-color: #e5e7eb;
-            --gradient-start: #1e40af;
-            --gradient-end: #3b82f6;
-        }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html { scroll-behavior: smooth; }
+        @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            font-family: 'Archivo', system-ui, sans-serif;
+            font-size: 1.0625rem;
             line-height: 1.6;
-            color: var(--text-color);
-            background: linear-gradient(to bottom, #ffffff 0%, #f9fafb 100%);
+            color: var(--ink);
+            background: var(--paper);
+            font-variation-settings: 'wdth' 100;
         }
 
+        a { color: var(--wine); text-decoration-thickness: 1px; text-underline-offset: 0.18em; }
+        a:hover { text-decoration-thickness: 2px; }
+        :focus-visible { outline: 2px solid var(--wine); outline-offset: 3px; border-radius: 2px; }
+
+        .wrap { max-width: 1120px; margin: 0 auto; padding: 0 2rem; }
+
+        /* ---------- Top bar ---------- */
         header {
-            background: var(--white);
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
+            position: sticky; top: 0; z-index: 10;
+            background: var(--paper);
+            border-bottom: 1px solid var(--rule);
         }
-
-        nav {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        header .wrap {
+            display: flex; align-items: center; justify-content: space-between;
+            gap: 2rem; height: 3.75rem;
         }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: var(--primary-color);
-            text-decoration: none;
+        .brand {
+            font-weight: 800; font-size: 1.35rem; letter-spacing: -0.01em;
+            font-stretch: 125%; font-variation-settings: 'wdth' 125;
+            color: var(--ink); text-decoration: none;
         }
+        nav ul { display: flex; gap: 1.75rem; list-style: none; }
+        nav a { color: var(--ink); text-decoration: none; font-size: 0.95rem; }
+        nav a:hover { color: var(--wine); }
 
-        .nav-menu {
-            display: flex;
-            list-style: none;
-            gap: 0.5rem;
-        }
-
-        .nav-item {
-            position: relative;
-        }
-
-        .nav-link {
-            display: block;
-            padding: 0.5rem 1rem;
-            color: var(--text-color);
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-
-        .nav-link:hover {
-            color: var(--secondary-color);
-        }
-
-        .dropdown {
-            display: none;
-            position: absolute;
-            top: 100%;
-            left: 0;
-            background: var(--white);
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            border-radius: 4px;
-            min-width: 200px;
-            padding: 0.5rem 0;
-        }
-
-        .nav-item:hover .dropdown {
-            display: block;
-        }
-
-        .dropdown-link {
-            display: block;
-            padding: 0.5rem 1rem;
-            color: var(--text-color);
-            text-decoration: none;
-            transition: background 0.3s;
-        }
-
-        .dropdown-link:hover {
-            background: var(--light-bg);
-            color: var(--secondary-color);
-        }
-
-        .stats-banner {
-            background: var(--white);
-            border-top: 1px solid var(--border-color);
-            border-bottom: 1px solid var(--border-color);
-            padding: 3rem 2rem;
-            margin-bottom: 0;
-        }
-
-        .stats-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 3rem;
-        }
-
-        .stat-item {
-            text-align: center;
-            padding: 1.5rem;
-            transition: transform 0.3s ease;
-        }
-
-        .stat-item:hover {
-            transform: translateY(-5px);
-        }
-
-        .stat-number {
-            font-size: 3.5rem;
-            font-weight: 700;
-            color: var(--secondary-color);
-            line-height: 1;
-            margin-bottom: 0.5rem;
-            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .stat-label {
-            font-size: 1.1rem;
-            color: var(--text-color);
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .stat-description {
-            font-size: 0.9rem;
-            color: #6b7280;
-            margin-top: 0.25rem;
-        }
-
-        @media (max-width: 768px) {
-            .stats-container {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-            }
-
-            .stat-number {
-                font-size: 2.5rem;
-            }
-
-            .stat-label {
-                font-size: 1rem;
-            }
-
-            .stats-banner {
-                padding: 2rem 1rem;
-            }
-        }
-            background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
-            color: var(--white);
-            padding: 6rem 2rem;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-            opacity: 0.3;
-        }
-
-        .hero-content {
-            max-width: 800px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 1;
-        }
-
+        /* ---------- Hero ---------- */
+        .hero { padding: 4.5rem 0 3.5rem; }
         .hero h1 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            font-weight: 700;
-            letter-spacing: -0.5px;
+            font-size: clamp(4.5rem, 14vw, 10rem);
+            line-height: 0.85;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            font-variation-settings: 'wdth' 125;
+        }
+        .hero .lead {
+            margin-top: 1.25rem;
+            font-size: clamp(1.2rem, 2.2vw, 1.5rem);
+            line-height: 1.35;
+            max-width: 40ch;
+            color: var(--ink);
         }
 
-        .hero p {
-            font-size: 1.3rem;
-            opacity: 0.95;
-            font-weight: 300;
+        /* Interlinear sample: the project's work, shown on its own material */
+        .interlinear {
+            margin-top: 3.5rem;
+            background: var(--surface);
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            padding: 1.75rem 1.75rem 1.25rem;
         }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 4rem 2rem;
+        .il-body { display: grid; grid-template-columns: 7.5rem 1fr; column-gap: 1.25rem; }
+        .il-labels, .tok { display: grid; grid-template-rows: 2.6rem 1.7rem 1.5rem 1.4rem; align-items: center; }
+        .il-labels span {
+            font-size: 0.8rem; color: var(--muted);
+            border-right: 1px solid var(--rule); padding-right: 0.75rem; text-align: right;
         }
-
-        section {
-            margin-bottom: 4rem;
+        .il-tokens { display: flex; flex-wrap: wrap; column-gap: 1.1rem; row-gap: 1rem; }
+        .tok > span { white-space: nowrap; }
+        .tok .o { font-size: 1.85rem; font-weight: 500; line-height: 1; }
+        .tok .n { font-size: 1.05rem; }
+        .tok .l { font-size: 0.9rem; font-style: italic; color: var(--muted); }
+        .tok .p { font-size: 0.72rem; color: var(--muted); letter-spacing: 0.02em; font-variation-settings: 'wdth' 80; }
+        .tok mark { background: var(--wine-soft); color: var(--wine); border-radius: 2px; padding: 0 1px; }
+        .interlinear figcaption {
+            margin-top: 1.25rem; padding-top: 0.9rem; border-top: 1px solid var(--rule);
+            font-size: 0.9rem; color: var(--muted);
         }
+        .il-legend { display: none; }
 
-        h2 {
-            font-size: 2.25rem;
-            color: var(--primary-color);
-            margin-bottom: 2rem;
-            padding-bottom: 0.75rem;
-            position: relative;
-            font-weight: 700;
+        /* Figures */
+        .figures {
+            display: grid; grid-template-columns: repeat(4, 1fr);
+            margin-top: 2.5rem;
         }
-
-        h2::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 60px;
-            height: 4px;
-            background: linear-gradient(to right, var(--secondary-color), var(--gradient-end));
-            border-radius: 2px;
+        .figures div { padding: 0.25rem 1.25rem; border-left: 1px solid var(--rule); }
+        .figures div:first-child { padding-left: 0; border-left: 0; }
+        .figures strong {
+            display: block; font-size: 2.6rem; line-height: 1.1; font-weight: 600;
+            font-variation-settings: 'wdth' 70; font-variant-numeric: tabular-nums;
         }
+        .figures span { display: block; font-size: 0.92rem; line-height: 1.35; color: var(--muted); }
 
-        h3 {
-            font-size: 1.5rem;
-            color: var(--primary-color);
-            margin: 2rem 0 1rem;
+        /* ---------- Sections ---------- */
+        main section {
+            display: grid; grid-template-columns: 14rem 1fr; column-gap: 3rem;
+            padding: 4rem 0; border-top: 1px solid var(--rule);
+            scroll-margin-top: 3.75rem;
         }
-
-        .card {
-            background: var(--white);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 2rem;
-            margin-bottom: 1.5rem;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-            transition: all 0.3s ease;
+        main section > h2 {
+            font-size: 1.6rem; line-height: 1.15; font-weight: 700;
+            font-variation-settings: 'wdth' 118; letter-spacing: -0.01em;
+            align-self: start; position: sticky; top: 5.5rem;
         }
+        .prose p { max-width: var(--measure); }
+        .prose p + p { margin-top: 1rem; }
+        .prose .first { font-size: 1.25rem; line-height: 1.5; }
 
-        .card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 24px rgba(0,0,0,0.12);
-            border-color: var(--secondary-color);
+        h3 { font-size: 1.15rem; font-weight: 700; line-height: 1.3; font-variation-settings: 'wdth' 108; }
+        h4 { font-size: 0.85rem; font-weight: 600; color: var(--muted); margin: 1.25rem 0 0.35rem; }
+
+        /* Tasks: three columns */
+        .tasks { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+        .task { border-top: 3px solid var(--wine); padding-top: 1rem; scroll-margin-top: 5rem; }
+        .task h3 { margin-bottom: 0.6rem; }
+        .task p { font-size: 0.97rem; }
+        .task ul { list-style: none; font-size: 0.95rem; }
+        .task li { padding: 0.15rem 0; }
+        .task .src li { color: var(--muted); }
+
+        /* Team */
+        .team h3 { margin: 2.25rem 0 1rem; font-size: 1rem; color: var(--muted); font-weight: 600; }
+        .team h3:first-child { margin-top: 0; }
+        .people { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1.25rem 2rem; list-style: none; }
+        .person { display: grid; grid-template-columns: 64px 1fr; gap: 1rem; align-items: center; }
+        .person img { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; background: var(--rule); }
+        .person b { display: block; font-weight: 600; }
+        .person span { display: block; font-size: 0.9rem; color: var(--muted); line-height: 1.4; }
+
+        /* Publications, by year */
+        .year { display: grid; grid-template-columns: 4.5rem 1fr; gap: 1.5rem; }
+        .year + .year { margin-top: 2.25rem; }
+        .year > span {
+            font-size: 1.5rem; font-weight: 600; line-height: 1.2; color: var(--muted);
+            font-variation-settings: 'wdth' 70; font-variant-numeric: tabular-nums;
         }
+        .pub + .pub { margin-top: 1.5rem; }
+        .pub h3 { font-size: 1.05rem; font-weight: 600; max-width: var(--measure); }
+        .pub h3 a { color: var(--ink); text-decoration: none; }
+        .pub h3 a:hover { color: var(--wine); text-decoration: underline; }
+        .pub h3 code { font-family: inherit; font-weight: inherit; }
+        sup { font-size: 0.7em; line-height: 0; }
+        .pub .au { font-size: 0.95rem; margin-top: 0.2rem; }
+        .pub .ve { font-size: 0.9rem; color: var(--muted); }
+        .pub details { margin-top: 0.35rem; font-size: 0.92rem; }
+        .pub summary { cursor: pointer; color: var(--wine); width: fit-content; }
+        .pub details p { margin-top: 0.5rem; max-width: var(--measure); color: var(--muted); }
 
-        .team-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
+        /* Resources */
+        .res { list-style: none; border-top: 1px solid var(--rule); }
+        .res li {
+            display: grid; grid-template-columns: 13rem 1fr; gap: 1.5rem;
+            padding: 1rem 0; border-bottom: 1px solid var(--rule);
         }
+        .res a { font-weight: 600; font-size: 1.05rem; }
+        .res p { max-width: var(--measure); font-size: 0.97rem; }
 
-        .team-member {
-            text-align: center;
-            padding: 1.5rem;
-            background: var(--white);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
+        /* Contact */
+        .contact p + p { margin-top: 0.4rem; }
+        .contact .mail { font-size: 1.35rem; font-weight: 500; }
+
+        /* Footer */
+        footer { border-top: 1px solid var(--rule); padding: 2.5rem 0 3rem; background: var(--surface); }
+        footer .wrap { display: flex; justify-content: space-between; align-items: center; gap: 2rem; flex-wrap: wrap; }
+        .logos { display: flex; gap: 2.25rem; align-items: center; flex-wrap: wrap; }
+        .logos img { height: 38px; width: auto; filter: grayscale(1); opacity: 0.75; }
+        footer p { font-size: 0.88rem; color: var(--muted); }
+        footer a { color: var(--muted); }
+
+        /* ---------- Responsive ---------- */
+        @media (max-width: 900px) {
+            main section { grid-template-columns: 1fr; row-gap: 1.5rem; padding: 3rem 0; }
+            main section > h2 { position: static; }
+            .tasks { grid-template-columns: 1fr; }
+            .figures { grid-template-columns: repeat(2, 1fr); row-gap: 1.5rem; }
+            .figures div:nth-child(3) { padding-left: 0; border-left: 0; }
         }
-
-        .team-member img {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-bottom: 1rem;
-            background: var(--light-bg);
-        }
-
-        .publication {
-            border-left: 4px solid var(--secondary-color);
-            padding-left: 1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .publication:hover {
-            border-left-color: var(--accent-color);
-            transform: translateX(5px);
-        }
-
-        .publication-title {
-            font-weight: bold;
-            color: var(--primary-color);
-            margin-bottom: 0.5rem;
-        }
-
-        .publication-authors {
-            color: #666;
-            font-style: italic;
-            margin-bottom: 0.5rem;
-        }
-
-        .publication-meta {
-            color: #999;
-            font-size: 0.9rem;
-        }
-
-        .resources-list {
-            list-style: none;
-            padding: 0;
-        }
-
-        .resources-list li {
-            padding: 1rem;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .resources-list li:last-child {
-            border-bottom: none;
-        }
-
-        .resource-link {
-            color: var(--secondary-color);
-            text-decoration: none;
-            font-weight: 500;
-        }
-
-        .resource-link:hover {
-            text-decoration: underline;
-        }
-
-        .contact-info {
-            background: var(--light-bg);
-            padding: 2rem;
-            border-radius: 8px;
-        }
-
-        footer {
-            background: var(--primary-color);
-            color: var(--white);
-            padding: 3rem 2rem 2rem;
-            margin-top: 4rem;
-        }
-
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .footer-logos {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 3rem;
-            flex-wrap: wrap;
-            margin-bottom: 2rem;
-            padding-bottom: 2rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .footer-logo {
-            height: 60px;
-            width: auto;
-            object-fit: contain;
-            filter: brightness(0) invert(1);
-            opacity: 0.9;
-            transition: opacity 0.3s, transform 0.3s;
-        }
-
-        .footer-logo:hover {
-            opacity: 1;
-            transform: scale(1.05);
-        }
-
-        .footer-text {
-            text-align: center;
-        }
-
-        .mobile-menu-toggle {
-            display: none;
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: var(--primary-color);
-        }
-
-        @media (max-width: 768px) {
-            .mobile-menu-toggle {
-                display: block;
-            }
-
-            .nav-menu {
-                display: none;
-                flex-direction: column;
-                position: absolute;
-                top: 100%;
-                left: 0;
-                right: 0;
-                background: var(--white);
-                box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-                padding: 1rem;
-            }
-
-            .nav-menu.active {
-                display: flex;
-            }
-
-            .dropdown {
-                position: static;
-                box-shadow: none;
-                padding-left: 1rem;
-            }
-
-            .hero {
-                padding: 3rem 1.5rem;
-            }
-
-            .hero h1 {
-                font-size: 2rem;
-            }
-
-            .hero p {
-                font-size: 1.1rem;
-            }
-
-            h2 {
-                font-size: 1.75rem;
-            }
-
-            .team-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .container {
-                padding: 2rem 1rem;
-            }
-
-            .card {
-                padding: 1.5rem;
-            }
-
-            .footer-logos {
-                gap: 2rem;
-            }
-
-            .footer-logo {
-                height: 40px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .hero h1 {
-                font-size: 1.75rem;
-            }
-
-            .hero p {
-                font-size: 1rem;
-            }
-
-            h2 {
-                font-size: 1.5rem;
-            }
-
-            nav {
-                padding: 1rem;
-            }
+        @media (max-width: 640px) {
+            .wrap { padding: 0 1rem; }
+            header .wrap { flex-direction: column; align-items: flex-start; height: auto; gap: 0.35rem; padding-top: 0.6rem; padding-bottom: 0.5rem; }
+            nav { width: 100%; overflow-x: auto; }
+            nav ul { gap: 1.25rem; }
+            nav a { white-space: nowrap; }
+            main section { scroll-margin-top: 5.5rem; }
+            .hero { padding-top: 2.5rem; }
+            .interlinear { padding: 1.25rem 1rem 1rem; }
+            .il-body { grid-template-columns: 1fr; }
+            .il-labels { display: none; }
+            .il-legend { display: block; }
+            .tok .o { font-size: 1.5rem; }
+            .figures strong { font-size: 2.1rem; }
+            .year { grid-template-columns: 1fr; gap: 0.5rem; }
+            .res li { grid-template-columns: 1fr; gap: 0.25rem; }
         }
     </style>
 </head>
 <body>
     <header>
-        <nav>
-            <a href="#about" class="logo">FreEM</a>
-            <button class="mobile-menu-toggle" onclick="toggleMenu()">☰</button>
-            <ul class="nav-menu" id="navMenu">
-                <li class="nav-item">
-                    <a href="#about" class="nav-link">About</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#tasks" class="nav-link">Tasks</a>
-                    <div class="dropdown">
-                        <a href="#lemmatization" class="dropdown-link">Lemmatisation & POS Tagging</a>
-                        <a href="#normalization" class="dropdown-link">Normalisation</a>
-                        <a href="#ner" class="dropdown-link">Named Entity Recognition</a>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <a href="#team" class="nav-link">Team</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#publications" class="nav-link">Publications</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#resources" class="nav-link">Resources</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#contact" class="nav-link">Contact</a>
-                </li>
-            </ul>
-        </nav>
+        <div class="wrap">
+            <a href="#top" class="brand">FreEM</a>
+            <nav aria-label="Main">
+                <ul>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#tasks">Tasks</a></li>
+                    <li><a href="#team">Team</a></li>
+                    <li><a href="#publications">Publications</a></li>
+                    <li><a href="#resources">Resources</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
     </header>
 
-    <section class="hero">
-        <div class="hero-content">
-            <h1>FreEM project</h1>
-            <p>NLP resources and applications for Early Modern French</p>
-        </div>
-    </section>
+    <div class="wrap" id="top">
+        <div class="hero">
+            <h1>FreEM</h1>
+            <p class="lead">Corpora and NLP models for Early Modern French, 16th–18th centuries.</p>
 
-    <section class="stats-banner">
-        <div class="stats-container">
-            <div class="stat-item">
-                <div class="stat-number">7.26M+</div>
-                <div class="stat-label">Tokens</div>
-                <div class="stat-description">Lemmatised corpus</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-number">4.85M+</div>
-                <div class="stat-label">Tokens</div>
-                <div class="stat-description">NER corpus</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-number">163k+</div>
-                <div class="stat-label">Tokens</div>
-                <div class="stat-description">POS+morph corpus</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-number">34M+</div>
-                <div class="stat-label">Lines</div>
-                <div class="stat-description">Normalized Text Lines</div>
+            <figure class="interlinear">
+                <div class="il-body">
+                    <div class="il-labels" aria-hidden="true">
+                        <span>Original</span><span>Normalised</span><span>Lemma</span><span>POS</span>
+                    </div>
+                    <div class="il-tokens">
+                        <div class="tok"><span class="o">Le</span><span class="n">Le</span><span class="l">le</span><span class="p">DETdef</span></div>
+                        <div class="tok"><span class="o">bon</span><span class="n">bon</span><span class="l">bon</span><span class="p">ADJqua</span></div>
+                        <div class="tok"><span class="o"><mark>ſ</mark>ens</span><span class="n"><mark>s</mark>ens</span><span class="l">sens</span><span class="p">NOMcom</span></div>
+                        <div class="tok"><span class="o">e<mark>ſ</mark>t</span><span class="n">e<mark>s</mark>t</span><span class="l">être</span><span class="p">VERcjg</span></div>
+                        <div class="tok"><span class="o">la</span><span class="n">la</span><span class="l">le</span><span class="p">DETdef</span></div>
+                        <div class="tok"><span class="o">cho<mark>ſ</mark>e</span><span class="n">cho<mark>s</mark>e</span><span class="l">chose</span><span class="p">NOMcom</span></div>
+                        <div class="tok"><span class="o">du</span><span class="n">du</span><span class="l">de+le</span><span class="p">PRE.DETdef</span></div>
+                        <div class="tok"><span class="o">monde</span><span class="n">monde</span><span class="l">monde</span><span class="p">NOMcom</span></div>
+                        <div class="tok"><span class="o">la</span><span class="n">la</span><span class="l">le</span><span class="p">DETdef</span></div>
+                        <div class="tok"><span class="o">mieux</span><span class="n">mieux</span><span class="l">mieux</span><span class="p">ADVgen</span></div>
+                        <div class="tok"><span class="o">partagée</span><span class="n">partagée</span><span class="l">partager</span><span class="p">VERppe</span></div>
+                        <div class="tok"><span class="o">car</span><span class="n">car</span><span class="l">car</span><span class="p">CONcoo</span></div>
+                        <div class="tok"><span class="o">cha<mark>ſ</mark>cun</span><span class="n">chacun</span><span class="l">chacun</span><span class="p">PROind</span></div>
+                        <div class="tok"><span class="o">pen<mark>ſ</mark>e</span><span class="n">pen<mark>s</mark>e</span><span class="l">penser</span><span class="p">VERcjg</span></div>
+                        <div class="tok"><span class="o">en</span><span class="n">en</span><span class="l">en</span><span class="p">PROadv</span></div>
+                        <div class="tok"><span class="o"><mark>eſ</mark>tre</span><span class="n"><mark>ê</mark>tre</span><span class="l">être</span><span class="p">VERinf</span></div>
+                        <div class="tok"><span class="o"><mark>ſ</mark>i</span><span class="n"><mark>s</mark>i</span><span class="l">si</span><span class="p">ADVgen</span></div>
+                        <div class="tok"><span class="o">bien</span><span class="n">bien</span><span class="l">bien</span><span class="p">ADVgen</span></div>
+                        <div class="tok"><span class="o">pour<mark>ue</mark>u</span><span class="n">pour<mark>v</mark>u</span><span class="l">pourvoir</span><span class="p">VERppe</span></div>
+                    </div>
+                </div>
+                <figcaption>René Descartes, <i>Discours de la méthode</i>, Leiden, 1637.<span class="il-legend"> Rows: original spelling, normalised form, lemma, part of speech.</span></figcaption>
+            </figure>
+
+            <div class="figures">
+                <div><strong>7.26M</strong><span>lemmatised tokens</span></div>
+                <div><strong>4.85M</strong><span>tokens annotated for named entities</span></div>
+                <div><strong>163k</strong><span>tokens with POS and morphology</span></div>
+                <div><strong>34M</strong><span>normalised lines</span></div>
             </div>
         </div>
-    </section>
+    </div>
 
-    <div class="container">
+    <main class="wrap">
         <section id="about">
             <h2>About</h2>
-            <div class="card">
-                <p>FreEM corpora is a project dedicated to Early Modern French (16th–18th centuries). It provides corpora and NLP models for several core tasks, including lemmatisation, part-of-speech tagging, linguistic normalisation, and named entity recognition.</p>
-                <p style="margin-top: 1rem;">The project brings together specialists in NLP and philology in order to deliver accurate linguistic modelling, large-scale annotated corpora, state-of-the-art models, and linguistic studies of Early Modern French.</p>
-                <p style="margin-top: 1rem;">All corpora are freely available.</p>
+            <div class="prose">
+                <p class="first">FreEM is a project dedicated to Early Modern French (16th–18th centuries). It provides corpora and NLP models for several core tasks: lemmatisation, part-of-speech tagging, linguistic normalisation and named entity recognition.</p>
+                <p>The project brings together specialists in NLP and philology in order to deliver accurate linguistic modelling, large-scale annotated corpora, state-of-the-art models, and linguistic studies of Early Modern French.</p>
+                <p>All corpora are freely available.</p>
             </div>
         </section>
 
         <section id="tasks">
             <h2>NLP tasks</h2>
-            
-            <div id="lemmatization">
-                <h3>Lemmas, Parts of speech, Morphology</h3>
-                <div class="card">
-                    <p>The FreEM<sub><i>LPM</i></sub> ("Lemmas, Parts of speech, Morphology") dataset provides training data for:</p> 
-                    <ul style="margin-top: 1rem; margin-left: 2rem;">
-                        <li>Lemmatisation</li>
-                        <li>Parts of speech </li>
-                        <li>Full morphological information (tense, mood, gender, etc.)</li>
-                    </ul>
-                    <p style="margin-top: 1rem;">Training data comes from several projects:</p>
-                    <ul style="margin-left: 2rem;">
+            <div class="tasks">
+                <div class="task" id="lemmatization">
+                    <h3>Lemmas, parts of speech, morphology</h3>
+                    <p>The FreEM<sub><i>LPM</i></sub> dataset provides training data for lemmatisation, part-of-speech tagging and full morphological information (tense, mood, gender, etc.).</p>
+                    <h4>Training data</h4>
+                    <ul class="src">
                         <li>SETAF (16th c.)</li>
-                        <li>PRESTO (16th-18th c.)</li>
+                        <li>PRESTO (16th–18th c.)</li>
                         <li>CORNMOL (17th c.)</li>
-                        <li>FRANTEXT (19-20th c.)</li>
+                        <li>FRANTEXT (19th–20th c.)</li>
                     </ul>
                 </div>
-            </div>
-
-            <div id="normalization">
-                <h3>Normalisation</h3>
-                <div class="card">
-                    <p>Text normalisation is crucial for processing noisy or non-orthographic text. Our system handles various normalisation challenges including spelling variants and abbreviations.</p>
-                    <p>FreEM<sub><i>norm</i></sub> consists of two parallel corpus covering a range of different genres of text throughout different centuries (16th-20th c.).</p>
-                    <ul style="margin-top: 1rem; margin-left: 2rem;">
-                        <li>Semi-diplomatic normalisation</li>
-                        <li>Full normalisation</li>
-                    </ul>
-                    <p style="margin-top: 1rem;">Training data comes from several projects:</p>
-                    <ul style="margin-left: 2rem;">
+                <div class="task" id="normalization">
+                    <h3>Normalisation</h3>
+                    <p>FreEM<sub><i>norm</i></sub> consists of two parallel corpora covering a range of genres from the 16th to the 20th century, for semi-diplomatic and full normalisation of spelling variants and abbreviations.</p>
+                    <h4>Training data</h4>
+                    <ul class="src">
                         <li>SETAF (16th c.)</li>
-                        <li>FreEM original data (16-20th c.)</li>
+                        <li>FreEM original data (16th–20th c.)</li>
                     </ul>
                 </div>
-            </div>
-
-            <div id="ner">
-                <h3>Named Entity Recognition</h3>
-                <div class="card">
-                    <p>Our NER system identifies and classifies named entities in text with high accuracy. The system recognizes persons, organizations, locations, and other entity types across multiple domains and centuries.</p>
-                    <ul style="margin-top: 1rem; margin-left: 2rem;">
-                        <li>Multi-class entity recognition</li>
-                        <li>Nested entity detection</li>
-                    </ul>
-                    <p style="margin-top: 1rem;">Training data comes from this project:</p>
-                    <ul style="margin-left: 2rem;">
-                        <li>PRESTO (16th-18th c.)</li>
+                <div class="task" id="ner">
+                    <h3>Named entity recognition</h3>
+                    <p>Fine-grained annotation of persons, organisations, locations and other entity types across three centuries, with multi-class and nested entities.</p>
+                    <h4>Training data</h4>
+                    <ul class="src">
+                        <li>PRESTO (16th–18th c.)</li>
                     </ul>
                 </div>
             </div>
@@ -614,224 +396,148 @@
 
         <section id="team">
             <h2>Team</h2>
-            
-            <h3>Principal Investigator</h3>
-            <div class="team-grid">
-                <div class="team-member">
-                    <img src="images/gabays.jpeg" alt="Principal Investigator">
-                    <h4>Simon Gabay</h4>
-                    <p>Philology, linguistics</p>
-                    <p style="margin-top: 0.5rem; color: #666; font-size: 0.9rem;">University of Geneva</p>
-                </div>
+            <div class="team">
+                <h3>Principal investigator</h3>
+                <ul class="people">
+                    <li class="person"><img src="images/gabays.jpeg" alt="Simon Gabay"><div><b>Simon Gabay</b><span>Philology, linguistics</span><span>University of Geneva</span></div></li>
+                </ul>
+                <h3>Participants</h3>
+                <ul class="people">
+                    <li class="person"><img src="images/ingl.jpeg" alt="Lucence Ing"><div><b>Lucence Ing</b><span>Philology</span><span>Inria Paris</span></div></li>
+                    <li class="person"><img src="images/solfrinis.jpeg" alt="Sonia Solfrini"><div><b>Sonia Solfrini</b><span>Philology</span><span>University of Geneva</span></div></li>
+                    <li class="person"><img src="images/clericet.jpeg" alt="Thibault Clérice"><div><b>Thibault Clérice</b><span>NLP</span><span>Inria Paris</span></div></li>
+                </ul>
+                <h3>Former participants</h3>
+                <ul class="people">
+                    <li class="person"><img src="images/ortizp.jpg" alt="Pedro Ortiz Suárez"><div><b>Pedro Ortiz Suárez</b><span>NLP</span><span>Inria Paris</span></div></li>
+                    <li class="person"><img src="images/bawdenr.jpg" alt="Rachel Bawden"><div><b>Rachel Bawden</b><span>NLP</span><span>Inria Paris</span></div></li>
+                    <li class="person"><img src="images/sagotb.jpeg" alt="Benoît Sagot"><div><b>Benoît Sagot</b><span>NLP</span><span>Inria Paris</span></div></li>
+                    <li class="person"><img src="images/gambettep.jpg" alt="Philippe Gambette"><div><b>Philippe Gambette</b><span>Computer science</span><span>Université Gustave Eiffel</span></div></li>
+                    <li class="person"><img src="images/bartza.png" alt="Alexandre Bartz"><div><b>Alexandre Bartz</b><span>Research engineer</span><span>Sorbonne Université</span></div></li>
+                </ul>
             </div>
-
-            <h3>Participants</h3>
-            <div class="team-grid">
-                <div class="team-member">
-                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150'%3E%3Crect fill='%2395a5a6' width='150' height='150'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='white' font-size='48' font-family='Arial'%3ELI%3C/text%3E%3C/svg%3E" alt="Team Member">
-
-                    <h4>Lucence Ing</h4>
-                    <p>Philology</p>
-                    <p style="margin-top: 0.5rem; color: #666; font-size: 0.9rem;">Inria Paris</p>
-                </div>
-                <div class="team-member">
-                    <img src="images/solfrinis.jpeg" alt="RB">
-                    <h4>Sonia Solfrini</h4>
-                    <p>Philology</p>
-                    <p style="margin-top: 0.5rem; color: #666; font-size: 0.9rem;">University of Geneva</p>
-                </div>
-                <div class="team-member">
-                    <img src="images/clericet.jpeg" alt="BS">
-                    <h4>Thibault Clérice</h4>
-                    <p>NLP</p>
-                    <p style="margin-top: 0.5rem; color: #666; font-size: 0.9rem;">Inria Paris</p>
-                </div>
-            </div>
-            <h3>Former participants</h3>
-            <div class="team-grid">
-                <div class="team-member">
-                    <img src="images/ortizp.jpg" alt="POS">
-                    <h4>Pedro Ortiz Suárez</h4>
-                    <p>NLP</p>
-                    <p style="margin-top: 0.5rem; color: #666; font-size: 0.9rem;">Inria Paris</p>
-                </div>
-                <div class="team-member">
-                    <img src="images/bawdenr.jpg" alt="RB">
-                    <h4>Rachel Bawden</h4>
-                    <p>NLP</p>
-                    <p style="margin-top: 0.5rem; color: #666; font-size: 0.9rem;">Inria Paris</p>
-                </div>
-                <div class="team-member">
-                    <img src="images/sagotb.jpeg" alt="BS">
-                    <h4>Benoît Sagot</h4>
-                    <p>NLP</p>
-                    <p style="margin-top: 0.5rem; color: #666; font-size: 0.9rem;">Inria Paris</p>
-                </div>
-            </div>
-           <div class="team-grid">
-                <div class="team-member">
-                    <img src="images/gambettep.jpg" alt="POS">
-                    <h4>Philippe Gambette</h4>
-                    <p>Computer science</p>
-                    <p style="margin-top: 0.5rem; color: #666; font-size: 0.9rem;">Université Gustave Eiffel</p>
-                </div>
-                <div class="team-member">
-                    <img src="images/bartza.png" alt="POS">
-                    <h4>Alexandre Bartz</h4>
-                    <p>Research Engineer</p>
-                    <p style="margin-top: 0.5rem; color: #666; font-size: 0.9rem;">Sorbonne Université</p>                </div>
-                <div class="team-member">
-
-                </div>
         </section>
 
         <section id="publications">
             <h2>Publications</h2>
-            <div class="card publication" onclick="window.open('https://2024.computational-humanities-research.org/papers/paper21', '_blank')">
-                <div class="publication-title">The birth of French orthography. A computational analysis of French spelling systems in diachrony</div>
-                <div class="publication-authors">Simon Gabay, Thibault Clérice</div>
-                <div class="publication-meta"><i>Computational Humanities Research Conference</i> (CHR), Dec 2024, Aahrus, Denmark.</div>
-                <p style="margin-top: 0.5rem;">The 17th c. is crucial for the French language, as it sees the creation of a strict orthographic norm that largely persists to this day. Despite its significance, the history of spelling systems remains however an overlooked area in linguistics for two reasons. On the one hand, spelling is made up of microchanges which requires a quantitative approach, and on the other hand, no corpus is available due to the interventions of editors in almost all the texts already available. In this paper, we therefore propose a new corpus allowing such a study, as well as the extraction and analysis tools necessary for our research. By comparing the text extracted with OCR and a version automatically aligned with contemporary French spelling, we extract the variant zones, we categorise these variants, and we study their frequency to study the (ortho)graphic change during the 17th century.</p>
-            </div>
-            <div class="card publication" onclick="window.open('https://doi.org/10.4000/linx.9346', '_blank')">
-                <div class="publication-title">Ancien ou moderne ? Pistes computationnelles pour l'analyse graphématique des textes écrits au XVIIe siècle</div>
-                <div class="publication-authors">Simon Gabay, Philippe Gambette, Rachel Bawden, Benoît Sagot</div>
-                <div class="publication-meta"><i>Linx</i>, 85, 2023.</div>
-                <p style="margin-top: 0.5rem;">The use of contemporary spelling rather than old graphic systems in the vast majority of current editions of 17th century French texts has the unfortunate effect of masking their graphematic richness. Such valuable information has remained concealed and therefore under-exploited, despite the potential it holds in terms of analysis. By favouring a practical corpus-based approach, rather than a theoretical one, and by relying on a recategorisation of the various competing systems at that time in French scriptae, we propose the foundations of a scriptometric study of the classical language, focusing on the analysis of specific documents, both manuscripts and old prints.</p>
-            </div>
-            <div class="card publication" onclick="window.open('https://aclanthology.org/2022.coling-1.327', '_blank')">
-                <div class="publication-title">A Data-driven Approach to Named Entity Recognition for Early Modern French</div>
-                <div class="publication-authors">Pedro Ortiz Suarez, Simon Gabay</div>
-                <div class="publication-meta"><i>29th International Conference on Computational Linguistics</i> (COLING), Oct 2022, Gyeongju, South Korea.</div>
-                <p style="margin-top: 0.5rem;">Named entity recognition has become an increasingly useful tool for digital humanities research, specially when it comes to historical texts. However, historical texts pose a wide range of challenges to both named entity recognition and natural language processing in general that are still difficult to address even with modern neural methods. In this article we focus in named entity recognition for historical French, and in particular for Early Modern French (16th-18 th c.), i.e. Ancien Régime French. However, instead of developing a specialised architecture to tackle the particularities of this state of language, we opt for a data-driven approach by developing a new corpus with fine-grained entity annotation, covering three centuries of literature corresponding to the early modern period; we try to annotate as much data as possible producing a corpus that is many times bigger than the most popular NER evaluation corpora for both Contemporary English and French. We then fine-tune existing state-of-the-art architectures for Early Modern and Contemporary French, obtaining results that are on par with those of the current state-of-the-art NER systems for Contemporary English. Both the corpus and the fine-tuned models are released.</p>
-            </div>
-            <div class="card publication" onclick="window.open('    https://doi.org/10.1051/shsconf/202213802006', '_blank')">
-                <div class="publication-title">Le changement linguistique au XVIIe siècle: nouvelles approches scriptométriques</div>
-                <div class="publication-authors">Simon Gabay, Rachel Bawden, Philippe Gambette, Jonathan Poinhos, Eleni Kogkitsidou, Benoît Sagot</div>
-                <div class="publication-meta"><i>8e Congrès Mondial de Linguistique Française</i> (CMLF), Jul 2022, Orléans, France.</div>
-                <p style="margin-top: 0.5rem;">Linguistic change in 17th c. France: new scriptometric approaches The end of the 17th c. remains a blind spot of the research on the spelling system, despite its importance for French at this period, during which a strict norm, still (more or less) in place, was created and imposed. Focusing on a practical rather than a theoretical approach, we propose to lay the foundation for a computational scriptometric study of early modern French and analyse the evolution of the spelling system over the 17th c. To do so, we measure and evaluate the distance between the early modern and the contemporary versions of the language, thanks to two automatic normalisers: one rule-based and another one neural-based.</p>
-            </div>
-            <div class="card publication" onclick="window.open('https://aclanthology.org/2022.lrec-1.358', '_blank')">
-                <div class="publication-title">Automatic Normalisation of Early Modern French</div>
-                <div class="publication-authors">Rachel Bawden, Jonathan Poinhos, Eleni Kogkitsidou, Philippe Gambette, Benoît Sagot, Simon Gabay</div>
-                <div class="publication-meta"><i>13th Language Resources and Evaluation Conference</i> (LREC), Jun 2022, Marseille, France.</div>
-                <p style="margin-top: 0.5rem;">Spelling normalisation is a useful step in the study and analysis of historical language texts, whether it is manual analysis by experts or automatic analysis using downstream natural language processing (NLP) tools. Not only does it help to homogenise the variable spelling that often exists in historical texts, but it also facilitates the use of off-the-shelf contemporary NLP tools, if contemporary spelling conventions are used for normalisation. We present FREEMnorm, a new benchmark for the normalisation of Early Modern French (from the 17th century) into contemporary French and provide a thorough comparison of three different normalisation methods: ABA, an alignment-based approach and MT-approaches, (both statistical and neural), including extensive parameter searching, which is often missing in the normalisation literature.</p>
-            </div>
-            <div class="card publication" onclick="window.open('https://aclanthology.org/2022.lrec-1.359', '_blank')">
-                <div class="publication-title">From FreEM to D’AlemBERT: a Large Corpus and a Language Model for Early Modern French</div>
-                <div class="publication-authors">Simon Gabay, Pedro Ortiz Suarez, Alexandre Bartz, Alix Chagué, Rachel Bawden, Philippe Gambette, Benoît Sagot</div>
-                <div class="publication-meta"><i>13th Language Resources and Evaluation Conference</i> (LREC), Jun 2022, Marseille, France.</div>
-                <p style="margin-top: 0.5rem;">Language models for historical states of language are becoming increasingly important to allow the optimal digitisation and analysis of old textual sources. Because these historical states are at the same time more complex to process and more scarce in the corpora available, specific efforts are necessary to train natural language processing (NLP) tools adapted to the data. In this paper, we present our efforts to develop NLP tools for Early Modern French (historical French from the 16th to the 18th centuries). We present the FreEMmax corpus of Early Modern French and D'AlemBERT, a RoBERTa-based language model trained on FreEMmax. We evaluate the usefulness of D'AlemBERT by fine-tuning it on a part-of-speech tagging task, outperforming previous work on the test set. Importantly, we find evidence for the transfer learning capacity of the language model, since its performance on lesser-resourced time periods appears to have been boosted by the more resourced ones. We release D'AlemBERT and the open-sourced subpart of the FreEMmax corpus.</p>
-            </div>
-            <div class="card publication" onclick="window.open('https://aclanthology.org/2022.jeptalnrecital-taln.15', '_blank')">
-                <div class="publication-title">Le projet FREEM : ressources, outils et enjeux pour l’étude du français d’Ancien Régime</div>
-                <div class="publication-authors">Simon Gabay, Pedro Ortiz Suarez, Rachel Bawden, Alexandre Bartz, Philippe Gambette, Benoît Sagot</div>
-                <div class="publication-meta"><i>Traitement Automatique des Langues Naturelles</i> (TALN), Jun 2022, Avignon, France.</div>
-                <p style="margin-top: 0.5rem;">Despite their undoubted quality, the resources and tools available for the analysis of Ancien Régime French are no longer able to meet the challenges of research in linguistics and literature for this period. After having precisely defined the chronological framework, we present the corpora made available and the results obtained with them for several NLP tasks, fundamental to the study of language and literature.</p>
-            </div>
-            <div class="card publication" onclick="window.open('https://doi.org/10.46298/jdmdh.6485', '_blank')">
-                <div class="publication-title">Corpus and Models for Lemmatisation and POS-tagging of Classical French Theatre</div>
-                <div class="publication-authors">Jean-Baptiste Camps, Simon Gabay, Paul Fièvre, Thibault Clérice, Florian Cafiero</div>
-                <div class="publication-meta"><i>Journal of Data Mining & Digital Humanities</i>, jdmdh:6485, 2021.</div>
-                <p style="margin-top: 0.5rem;">This paper describes the process of building an annotated corpus and training models for classical French literature, with a focus on theatre, and particularly comedies in verse. It was originally developed as a preliminary step to the stylometric analyses presented in Cafiero and Camps [2019]. The use of a recent lemmatiser based on neural networks and a CRF tagger allows to achieve accuracies beyond the current state-of-the art on the in-domain test, and proves to be robust during out-of-domain tests, i.e. up to 20th c.novels.</p>
-            </div>
-            <div class="card publication" onclick="window.open('https://hal.science/hal-03380805', '_blank')">
-                <div class="publication-title">Expanding the content model of annotationBlock</div>
-                <div class="publication-authors">Alexandre Bartz, Juliette Janès, Laurent Romary, Philippe Gambette, Rachel Bawden, Pedro Ortiz Suarez, Benoît Sagot, Simon Gabay</div>
-                <div class="publication-meta">International Workshop on Digital Humanities 2023, Oct 2021, Virtual, United States</div>
-                <p style="margin-top: 0.5rem;">Linguistic annotation benefits from ISO specifications such as the Morphosyntactic Annotation Framework (MAF), whose recommendations have been added to the TEI P5. Relying on feature structures, these recommendations have however not been fully integrated into the TEI stand-off annotation model and, for instance, it is currently impossible to encode feature structures within the listAnnotation and annotationBlock elements.</p>
-            </div>
-            <div class="card publication" onclick="window.open('https://doi.org/10.1145/3423603.3423996', '_blank')">
-                <div class="publication-title">Standardizing linguistic data: method and tools for annotating (pre-orthographic) French</div>
-                <div class="publication-authors">Simon Gabay, Thibault Clérice, Jean-Baptiste Camps, Jean-Baptiste Tanguy, Matthias Gille-Levenson</div>
-                <div class="publication-meta"><i>Proceedings of the 2nd International Conference on Digital Tools & Uses Congress</i>, Oct 2020, Tunisia</div>
-                <p style="margin-top: 0.5rem;">With the development of big corpora of various periods, it becomes crucial to standardise linguistic annotation (e.g. lemmas, POS tags, morphological annotation) to increase the interoperability of the data produced, despite diachronic variations. In the present paper, we describe both methodologically (by proposing annotation principles) and technically (by creating the required training data and the relevant models) the production of a linguistic tagger for (early) modern French (16-18th c.), taking as much as possible into account already existing standards for contemporary and, especially, medieval French.</p>
-            </div>
-            <div class="card publication" onclick="window.open('https://aclanthology.org/2020.jeptalnrecital-taln.20', '_blank')">
-                <div class="publication-title">Traduction automatique pour la normalisation du français du XVIIe siècle</div>
-                <div class="publication-authors">Simon Gabay, Loïc Barrault</div>
-                <div class="publication-meta"><i>Traitement Automatique des Langues Naturelles</i> (TALN), Jun 2020, Nancy, France.</div>
-                <p style="margin-top: 0.5rem;">The study of old state of languages is facing a double problem : on the one hand the distance with contemporary spelling prevents scholars from using standard NLP solutions, on the other hand the instability of the scriptae complexifies the training of solutions directly on the original source text. Returning to this problem with a DH perspective, we start with the philological reasoning behind the creation of the training corpus, and use traditional NLP methods to compare two machine translation systems (statistical and neural) and offer a functional tool for the normalisation of 17th c. French answering the needs of philologists.</p>
-            </div>
-            <div class="card publication" onclick="window.open('https://hal.science/hal-02276150, '_blank')">
-                <div class="publication-title">A Workflow For On The Fly Normalisation Of 17th c. French</div>
-                <div class="publication-authors">Simon Gabay, Marine Riguet, Loïc Barrault</div>
-                <div class="publication-meta"><i>Digital Humanities</i> (DH), Jul 2019, Utrecht, the Netherlands</div>
-                <p style="margin-top: 0.5rem;">If Neural machine tranaslation (NMT) has proven to be the most efficient solution for normalising pre-orthographic texts, the amount of training data required remains an obstacle. In this paper, we address for the first time the case of normalising modern French and we propose a workflow to create the parallel corpus that an NMT solution requires.</p>
+            <div>
+                <div class="year"><span>2024</span><div>
+                    <article class="pub">
+                        <h3><a href="https://2024.computational-humanities-research.org/papers/paper21" target="_blank" rel="noopener">The Birth of French Orthography. A Computational Analysis of French Spelling Systems in Diachrony</a></h3>
+                        <p class="au">Simon Gabay, Thibault Clérice</p>
+                        <p class="ve"><i>Computational Humanities Research Conference</i> (CHR), Dec 2024, Aarhus, Denmark.</p>
+                        <details><summary>Abstract</summary><p>The 17th c. is crucial for the French language, as it sees the creation of a strict orthographic norm that largely persists to this day. Despite its significance, the history of spelling systems remains however an overlooked area in linguistics for two reasons. On the one hand, spelling is made up of microchanges which requires a quantitative approach, and on the other hand, no corpus is available due to the interventions of editors in almost all the texts already available. In this paper, we therefore propose a new corpus allowing such a study, as well as the extraction and analysis tools necessary for our research. By comparing the text extracted with OCR and a version automatically aligned with contemporary French spelling, we extract the variant zones, we categorise these variants, and we study their frequency to study the (ortho)graphic change during the 17th century.</p></details>
+                    </article>
+                </div></div>
+                <div class="year"><span>2023</span><div>
+                    <article class="pub">
+                        <h3><a href="https://doi.org/10.4000/linx.9346" target="_blank" rel="noopener">Ancien ou moderne&#8239;? Pistes computationnelles pour l’analyse graphématique des textes écrits au XVII<sup>e</sup>&nbsp;siècle</a></h3>
+                        <p class="au">Simon Gabay, Philippe Gambette, Rachel Bawden, Benoît Sagot</p>
+                        <p class="ve"><i>Linx</i>, 85, 2023.</p>
+                        <details><summary>Abstract</summary><p>The use of contemporary spelling rather than old graphic systems in the vast majority of current editions of 17th century French texts has the unfortunate effect of masking their graphematic richness. Such valuable information has remained concealed and therefore under-exploited, despite the potential it holds in terms of analysis. By favouring a practical corpus-based approach, rather than a theoretical one, and by relying on a recategorisation of the various competing systems at that time in French scriptae, we propose the foundations of a scriptometric study of the classical language, focusing on the analysis of specific documents, both manuscripts and old prints.</p></details>
+                    </article>
+                </div></div>
+                <div class="year"><span>2022</span><div>
+                    <article class="pub">
+                        <h3><a href="https://aclanthology.org/2022.coling-1.327" target="_blank" rel="noopener">A Data-Driven Approach to Named Entity Recognition for Early Modern French</a></h3>
+                        <p class="au">Pedro Ortiz Suárez, Simon Gabay</p>
+                        <p class="ve"><i>29th International Conference on Computational Linguistics</i> (COLING), Oct 2022, Gyeongju, South Korea.</p>
+                        <details><summary>Abstract</summary><p>Named entity recognition has become an increasingly useful tool for digital humanities research, specially when it comes to historical texts. However, historical texts pose a wide range of challenges to both named entity recognition and natural language processing in general that are still difficult to address even with modern neural methods. In this article we focus in named entity recognition for historical French, and in particular for Early Modern French (16th-18 th c.), i.e. Ancien Régime French. However, instead of developing a specialised architecture to tackle the particularities of this state of language, we opt for a data-driven approach by developing a new corpus with fine-grained entity annotation, covering three centuries of literature corresponding to the early modern period; we try to annotate as much data as possible producing a corpus that is many times bigger than the most popular NER evaluation corpora for both Contemporary English and French. We then fine-tune existing state-of-the-art architectures for Early Modern and Contemporary French, obtaining results that are on par with those of the current state-of-the-art NER systems for Contemporary English. Both the corpus and the fine-tuned models are released.</p></details>
+                    </article>
+                    <article class="pub">
+                        <h3><a href="https://doi.org/10.1051/shsconf/202213802006" target="_blank" rel="noopener">Le changement linguistique au XVII<sup>e</sup>&nbsp;siècle&nbsp;: nouvelles approches scriptométriques</a></h3>
+                        <p class="au">Simon Gabay, Rachel Bawden, Philippe Gambette, Jonathan Poinhos, Eleni Kogkitsidou, Benoît Sagot</p>
+                        <p class="ve"><i>8<sup>e</sup> Congrès mondial de linguistique française</i> (CMLF), Jul 2022, Orléans, France.</p>
+                        <details><summary>Abstract</summary><p>Linguistic change in 17th c. France: new scriptometric approaches The end of the 17th c. remains a blind spot of the research on the spelling system, despite its importance for French at this period, during which a strict norm, still (more or less) in place, was created and imposed. Focusing on a practical rather than a theoretical approach, we propose to lay the foundation for a computational scriptometric study of early modern French and analyse the evolution of the spelling system over the 17th c. To do so, we measure and evaluate the distance between the early modern and the contemporary versions of the language, thanks to two automatic normalisers: one rule-based and another one neural-based.</p></details>
+                    </article>
+                    <article class="pub">
+                        <h3><a href="https://aclanthology.org/2022.lrec-1.358" target="_blank" rel="noopener">Automatic Normalisation of Early Modern French</a></h3>
+                        <p class="au">Rachel Bawden, Jonathan Poinhos, Eleni Kogkitsidou, Philippe Gambette, Benoît Sagot, Simon Gabay</p>
+                        <p class="ve"><i>13th Language Resources and Evaluation Conference</i> (LREC), Jun 2022, Marseille, France.</p>
+                        <details><summary>Abstract</summary><p>Spelling normalisation is a useful step in the study and analysis of historical language texts, whether it is manual analysis by experts or automatic analysis using downstream natural language processing (NLP) tools. Not only does it help to homogenise the variable spelling that often exists in historical texts, but it also facilitates the use of off-the-shelf contemporary NLP tools, if contemporary spelling conventions are used for normalisation. We present FREEMnorm, a new benchmark for the normalisation of Early Modern French (from the 17th century) into contemporary French and provide a thorough comparison of three different normalisation methods: ABA, an alignment-based approach and MT-approaches, (both statistical and neural), including extensive parameter searching, which is often missing in the normalisation literature.</p></details>
+                    </article>
+                    <article class="pub">
+                        <h3><a href="https://aclanthology.org/2022.lrec-1.359" target="_blank" rel="noopener">From FreEM to D’AlemBERT: A Large Corpus and a Language Model for Early Modern French</a></h3>
+                        <p class="au">Simon Gabay, Pedro Ortiz Suárez, Alexandre Bartz, Alix Chagué, Rachel Bawden, Philippe Gambette, Benoît Sagot</p>
+                        <p class="ve"><i>13th Language Resources and Evaluation Conference</i> (LREC), Jun 2022, Marseille, France.</p>
+                        <details><summary>Abstract</summary><p>Language models for historical states of language are becoming increasingly important to allow the optimal digitisation and analysis of old textual sources. Because these historical states are at the same time more complex to process and more scarce in the corpora available, specific efforts are necessary to train natural language processing (NLP) tools adapted to the data. In this paper, we present our efforts to develop NLP tools for Early Modern French (historical French from the 16th to the 18th centuries). We present the FreEMmax corpus of Early Modern French and D'AlemBERT, a RoBERTa-based language model trained on FreEMmax. We evaluate the usefulness of D'AlemBERT by fine-tuning it on a part-of-speech tagging task, outperforming previous work on the test set. Importantly, we find evidence for the transfer learning capacity of the language model, since its performance on lesser-resourced time periods appears to have been boosted by the more resourced ones. We release D'AlemBERT and the open-sourced subpart of the FreEMmax corpus.</p></details>
+                    </article>
+                    <article class="pub">
+                        <h3><a href="https://aclanthology.org/2022.jeptalnrecital-taln.15" target="_blank" rel="noopener">Le projet FREEM&nbsp;: ressources, outils et enjeux pour l’étude du français d’Ancien Régime</a></h3>
+                        <p class="au">Simon Gabay, Pedro Ortiz Suárez, Rachel Bawden, Alexandre Bartz, Philippe Gambette, Benoît Sagot</p>
+                        <p class="ve"><i>Traitement automatique des langues naturelles</i> (TALN), Jun 2022, Avignon, France.</p>
+                        <details><summary>Abstract</summary><p>Despite their undoubted quality, the resources and tools available for the analysis of Ancien Régime French are no longer able to meet the challenges of research in linguistics and literature for this period. After having precisely defined the chronological framework, we present the corpora made available and the results obtained with them for several NLP tasks, fundamental to the study of language and literature.</p></details>
+                    </article>
+                </div></div>
+                <div class="year"><span>2021</span><div>
+                    <article class="pub">
+                        <h3><a href="https://doi.org/10.46298/jdmdh.6485" target="_blank" rel="noopener">Corpus and Models for Lemmatisation and POS-Tagging of Classical French Theatre</a></h3>
+                        <p class="au">Jean-Baptiste Camps, Simon Gabay, Paul Fièvre, Thibault Clérice, Florian Cafiero</p>
+                        <p class="ve"><i>Journal of Data Mining & Digital Humanities</i>, jdmdh:6485, 2021.</p>
+                        <details><summary>Abstract</summary><p>This paper describes the process of building an annotated corpus and training models for classical French literature, with a focus on theatre, and particularly comedies in verse. It was originally developed as a preliminary step to the stylometric analyses presented in Cafiero and Camps [2019]. The use of a recent lemmatiser based on neural networks and a CRF tagger allows to achieve accuracies beyond the current state-of-the art on the in-domain test, and proves to be robust during out-of-domain tests, i.e. up to 20th c.novels.</p></details>
+                    </article>
+                    <article class="pub">
+                        <h3><a href="https://hal.science/hal-03380805" target="_blank" rel="noopener">Expanding the Content Model of <code>annotationBlock</code></a></h3>
+                        <p class="au">Alexandre Bartz, Juliette Janès, Laurent Romary, Philippe Gambette, Rachel Bawden, Pedro Ortiz Suárez, Benoît Sagot, Simon Gabay</p>
+                        <p class="ve"><i>Next Gen TEI, 2021 – TEI Conference and Members' Meeting</i>, Oct 2021, Virtual, United States.</p>
+                        <details><summary>Abstract</summary><p>Linguistic annotation benefits from ISO specifications such as the Morphosyntactic Annotation Framework (MAF), whose recommendations have been added to the TEI P5. Relying on feature structures, these recommendations have however not been fully integrated into the TEI stand-off annotation model and, for instance, it is currently impossible to encode feature structures within the listAnnotation and annotationBlock elements.</p></details>
+                    </article>
+                </div></div>
+                <div class="year"><span>2020</span><div>
+                    <article class="pub">
+                        <h3><a href="https://doi.org/10.1145/3423603.3423996" target="_blank" rel="noopener">Standardizing Linguistic Data: Method and Tools for Annotating (Pre-orthographic) French</a></h3>
+                        <p class="au">Simon Gabay, Thibault Clérice, Jean-Baptiste Camps, Jean-Baptiste Tanguy, Matthias Gille-Levenson</p>
+                        <p class="ve"><i>Proceedings of the 2nd International Conference on Digital Tools & Uses Congress</i>, Oct 2020, Tunisia.</p>
+                        <details><summary>Abstract</summary><p>With the development of big corpora of various periods, it becomes crucial to standardise linguistic annotation (e.g. lemmas, POS tags, morphological annotation) to increase the interoperability of the data produced, despite diachronic variations. In the present paper, we describe both methodologically (by proposing annotation principles) and technically (by creating the required training data and the relevant models) the production of a linguistic tagger for (early) modern French (16-18th c.), taking as much as possible into account already existing standards for contemporary and, especially, medieval French.</p></details>
+                    </article>
+                    <article class="pub">
+                        <h3><a href="https://aclanthology.org/2020.jeptalnrecital-taln.20" target="_blank" rel="noopener">Traduction automatique pour la normalisation du français du XVII<sup>e</sup>&nbsp;siècle</a></h3>
+                        <p class="au">Simon Gabay, Loïc Barrault</p>
+                        <p class="ve"><i>Traitement automatique des langues naturelles</i> (TALN), Jun 2020, Nancy, France.</p>
+                        <details><summary>Abstract</summary><p>The study of old state of languages is facing a double problem : on the one hand the distance with contemporary spelling prevents scholars from using standard NLP solutions, on the other hand the instability of the scriptae complexifies the training of solutions directly on the original source text. Returning to this problem with a DH perspective, we start with the philological reasoning behind the creation of the training corpus, and use traditional NLP methods to compare two machine translation systems (statistical and neural) and offer a functional tool for the normalisation of 17th c. French answering the needs of philologists.</p></details>
+                    </article>
+                </div></div>
+                <div class="year"><span>2019</span><div>
+                    <article class="pub">
+                        <h3><a href="https://hal.science/hal-02276150" target="_blank" rel="noopener">A Workflow for On the Fly Normalisation of 17th c. French</a></h3>
+                        <p class="au">Simon Gabay, Marine Riguet, Loïc Barrault</p>
+                        <p class="ve"><i>Digital Humanities</i> (DH), Jul 2019, Utrecht, the Netherlands.</p>
+                        <details><summary>Abstract</summary><p>If neural machine translation (NMT) has proven to be the most efficient solution for normalising pre-orthographic texts, the amount of training data required remains an obstacle. In this paper, we address for the first time the case of normalising modern French and we propose a workflow to create the parallel corpus that an NMT solution requires.</p></details>
+                    </article>
+                </div></div>
             </div>
         </section>
 
         <section id="resources">
             <h2>Resources</h2>
-            <div class="card">
-                <ul class="resources-list">
-                    <li>
-                        <a href="https://doi.org/10.5281/zenodo.6481299" target="_blank" class="resource-link">FreEM<sub><i>LPM</i></sub></a>
-                        <p style="margin-top: 0.5rem; color: #666;">Corpora annotated in lemmas, POS, morphology and named entities.</p>
-                    </li>
-                    <li>
-                        <a href="https://doi.org/10.5281/zenodo.5865427" class="resource-link">FreEM<sub><i>norm</i></a>
-                        <p style="margin-top: 0.5rem; color: #666;">Parallel corpus for linguistic normalisation.</p>
-                    </li>
-                    <li>
-                        <a href="https://doi.org/10.5281/zenodo.6481134" class="resource-link">FreEM<sub><i>max</i></sub> (Open access)</a>
-                        <p style="margin-top: 0.5rem; color: #666;">Corpus of historical texts for LLM training. A non-open version exists but cannot be distributed.</p>
-                    </li>
-                    <li>
-                        <a href="https://huggingface.co/pjox/dalembert" class="resource-link">D'AlemBERT</a>
-                        <p style="margin-top: 0.5rem; color: #666;">This model is a RoBERTa base model pre-trained on the FreEMmax corpus for Early Modern French. This model is Cased and was trained with a mix of normalized and unnormalized data.</p>
-                    </li>
-                </ul>
-            </div>
+            <ul class="res">
+                <li><a href="https://doi.org/10.5281/zenodo.6481299" target="_blank" rel="noopener">FreEM<sub><i>LPM</i></sub></a><p>Corpora annotated for lemmas, POS, morphology and named entities.</p></li>
+                <li><a href="https://doi.org/10.5281/zenodo.5865427" target="_blank" rel="noopener">FreEM<sub><i>norm</i></sub></a><p>Parallel corpus for linguistic normalisation.</p></li>
+                <li><a href="https://doi.org/10.5281/zenodo.6481134" target="_blank" rel="noopener">FreEM<sub><i>max</i></sub></a><p>Open-access corpus of historical texts for training language models. A larger version exists but cannot be distributed.</p></li>
+                <li><a href="https://huggingface.co/pjox/dalembert" target="_blank" rel="noopener">D’AlemBERT</a><p>RoBERTa base model pre-trained on FreEM<sub><i>max</i></sub> for Early Modern French. Cased, trained on a mix of normalised and unnormalised data.</p></li>
+            </ul>
         </section>
 
         <section id="contact">
             <h2>Contact</h2>
-            <div class="contact-info">
-                <p><strong>Email:</strong> simon.gabay@unige.ch</p>
-                <p style="margin-top: 0.5rem;"><strong>Address:</strong> Humanités numériques, Université de Genève, Geneva, Switzerland.</p>
-                <p style="margin-top: 1.5rem;">For inquiries about collaboration, data access, or other questions, please reach out via email.</p>
+            <div class="contact prose">
+                <p class="mail"><a href="mailto:simon.gabay@unige.ch">simon.gabay@unige.ch</a></p>
+                <p>Department of Digital Humanities, University of Geneva, Geneva, Switzerland.</p>
+                <p>For collaboration, data access or any other question, please get in touch by email.</p>
             </div>
         </section>
-    </div>
+    </main>
 
     <footer>
-        <div class="footer-content">
-            <div class="footer-logos">
-                <!-- Replace with your actual institution logos -->
-                <img src="logos/unige.png" alt="Funding Body" class="footer-logo">
-                <img src="logos/inria.png" alt="Institution 1" class="footer-logo">
-                <img src="logos/sorbonne.png" alt="Institution 2" class="footer-logo">
-                <img src="logos/uge.png" alt="Institution 3" class="footer-logo">
+        <div class="wrap">
+            <div class="logos">
+                <img src="logos/unige.png" alt="Université de Genève">
+                <img src="logos/inria.png" alt="Inria">
+                <img src="logos/sorbonne.png" alt="Sorbonne Université">
+                <img src="logos/uge.png" alt="Université Gustave Eiffel">
             </div>
-            <div class="footer-text">
-                <p><a href="https://creativecommons.org/licenses/by/4.0" style="color:darkgrey">CC-BY 4.0</a>, 2026, FreEM Project.</p>
-            </div>
+            <p><a href="https://creativecommons.org/licenses/by/4.0" target="_blank" rel="noopener">CC BY 4.0</a>, 2026, FreEM project.</p>
         </div>
     </footer>
-
-    <script>
-        function toggleMenu() {
-            const menu = document.getElementById('navMenu');
-            menu.classList.toggle('active');
-        }
-
-        // Smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                    // Close mobile menu if open
-                    const menu = document.getElementById('navMenu');
-                    menu.classList.remove('active');
-                }
-            });
-        });
-    </script>
 </body>
 </html>
